@@ -1,0 +1,36 @@
+.home-container {
+    padding: 2rem;
+    text-align: center;
+  }
+  
+  .navbar {
+    list-style: none;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    margin-bottom: 2rem;
+  }
+  
+  .navbar li {
+    margin: 0 1rem;
+  }
+  
+  .navbar a {
+    text-decoration: none;
+    color: #333;
+    font-weight: bold;
+  }
+  
+  .info-section {
+    max-width: 800px;
+    margin: auto;
+    text-align: left;
+  }
+  
+  .info-section h2 {
+    margin-bottom: 1rem;
+  }
+  
+  .info-section p {
+    margin-bottom: 1rem;
+  }
