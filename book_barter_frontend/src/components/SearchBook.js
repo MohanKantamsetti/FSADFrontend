@@ -1,0 +1,212 @@
+import React, { useState, useRef } from 'react';
+import axios from 'axios';
+import './SearchBook.css';
+
+const SearchBook = () => {
+  const [searchType, setSearchType] = useState('title');
+  const [searchText, setSearchText] = useState('');
+  const [page, setPage] = useState(1);
+  const [limit, setLimit] = useState(5);
+  const [sort, setSort] = useState('genre');
+  const [results, setResults] = useState([]);
+  const [advancedSearch, setAdvancedSearch] = useState(false);
+  const [advancedSearchFields, setAdvancedSearchFields] = useState({
+    owner: '',
+    author: '',
+    genre: '',
+    condition: '',
+    availability: '',
+    location: '',
+    title: ''
+  });
+  const [errorMessage, setErrorMessage] = useState('');
+  const resultsRef = useRef(null);
+
+  const handleSearch = async (e) => {
+    e.preventDefault();
+    const accessToken = localStorage.getItem('access_token');
+
+    setResults([]);
+    setErrorMessage('');
+
+    try {
+      if (advancedSearch) {
+        const query = {};
+        for (const key in advancedSearchFields) {
+          if (advancedSearchFields[key]) {
+            query[key] = advancedSearchFields[key];
+          }
+        }
+
+        const response = await axios.post('http://localhost:5001/api/books/query', query, {
+          headers: { Authorization: `Bearer ${accessToken}` }
+        });
+        setResults(response.data.data);
+      } else {
+        const params = {
+          [searchType]: searchText,
+          page,
+          limit,
+          sort
+        };
+
+        const response = await axios.get('http://localhost:5001/api/books', {
+          headers: { Authorization: `Bearer ${accessToken}` },
+          params
+        });
+        setResults(response.data.data);
+      }
+
+      if (resultsRef.current) {
+        resultsRef.current.scrollIntoView({ behavior: 'smooth' });
+      }
+    } catch (error) {
+      console.error('Search failed:', error);
+      setErrorMessage(error.response.data.message);
+    }
+  };
+
+  const handlePageChange = (direction) => {
+    setPage(page + direction);
+  };
+
+  const handleAdvancedSearchChange = (e) => {
+    const { name, value } = e.target;
+    setAdvancedSearchFields({ ...advancedSearchFields, [name]: value });
+  };
+
+  return (
+    <div className="search-book-container">
+      <h2>Search Books</h2>
+      {!advancedSearch && (
+        <form onSubmit={handleSearch} className="search-form">
+          <div className="simple-search">
+            <div className="form-group">
+              <label>Search By:</label>
+              <select value={searchType} onChange={(e) => setSearchType(e.target.value)}>
+                <option value="owner">Owner</option>
+                <option value="author">Author</option>
+                <option value="genre">Genre</option>
+                <option value="condition">Condition</option>
+                <option value="availability">Availability</option>
+                <option value="location">Location</option>
+                <option value="title">Title</option>
+              </select>
+            </div>
+            <div className="form-group">
+              <label>Search Text:</label>
+              <input type="text" value={searchText} onChange={(e) => setSearchText(e.target.value)} />
+            </div>
+            <div className="form-group">
+              <label>Page:</label>
+              <input type="number" value={page} onChange={(e) => setPage(Number(e.target.value))} />
+            </div>
+            <div className="form-group">
+              <label>Limit:</label>
+              <input type="number" value={limit} onChange={(e) => setLimit(Number(e.target.value))} />
+            </div>
+            <div className="form-group">
+              <label>Sort By:</label>
+              <select value={sort} onChange={(e) => setSort(e.target.value)}>
+                <option value="genre">Genre</option>
+                <option value="title">Title</option>
+                <option value="author">Author</option>
+              </select>
+            </div>
+            <button type="submit" className="search-button">Search</button>
+          </div>
+        </form>
+      )}
+
+      <button onClick={() => setAdvancedSearch(!advancedSearch)} className="toggle-advanced-search">
+        {advancedSearch ? 'Hide Advanced Search' : 'Show Advanced Search'}
+      </button>
+
+      {advancedSearch && (
+        <form onSubmit={handleSearch} className="advanced-search-form">
+          <div className="form-group">
+            <label>Owner:</label>
+            <input type="text" name="owner" value={advancedSearchFields.owner} onChange={handleAdvancedSearchChange} />
+          </div>
+          <div className="form-group">
+            <label>Author:</label>
+            <input type="text" name="author" value={advancedSearchFields.author} onChange={handleAdvancedSearchChange} />
+          </div>
+          <div className="form-group">
+            <label>Genre:</label>
+            <input type="text" name="genre" value={advancedSearchFields.genre} onChange={handleAdvancedSearchChange} />
+          </div>
+          <div className="form-group">
+            <label>Condition:</label>
+            <input type="text" name="condition" value={advancedSearchFields.condition} onChange={handleAdvancedSearchChange} />
+          </div>
+          <div className="form-group">
+            <label>Availability:</label>
+            <select name="availability" value={advancedSearchFields.availability} onChange={handleAdvancedSearchChange}>
+              <option value="">Any</option>
+              <option value="true">Available</option>
+              <option value="false">Lended</option>
+            </select>
+          </div>
+          <div className="form-group">
+            <label>Location:</label>
+            <input type="text" name="location" value={advancedSearchFields.location} onChange={handleAdvancedSearchChange} />
+          </div>
+          <div className="form-group">
+            <label>Title:</label>
+            <input type="text" name="title" value={advancedSearchFields.title} onChange={handleAdvancedSearchChange} />
+          <button type="submit" className="search-button">Search</button>
+          </div>
+        </form>
+      )}
+
+      {errorMessage && <p className="error-message">{errorMessage}</p>}
+
+      <div ref={resultsRef}>
+        {results.length > 0 && (
+          <div className="search-results">
+            <h3>Results:</h3>
+            <table className="results-table">
+              <thead>
+                <tr>
+                  <th>Title</th>
+                  <th>Author</th>
+                  <th>Genre</th>
+                  <th>Condition</th>
+                  <th>Availability</th>
+                  <th>Location</th>
+                  <th>Description</th>
+                  <th>ISBN</th>
+                </tr>
+              </thead>
+              <tbody>
+                {results.map((book) => (
+                  <tr key={book.bid}>
+                    <td>{book.title}</td>
+                    <td>{book.author}</td>
+                    <td>{book.genre}</td>
+                    <td>{book.condition}</td>
+                    <td className={book.availability ? 'available' : 'not-available'}>
+                      {book.availability ? 'Available' : 'Lended'}
+                    </td>
+                    <td>{book.location}</td>
+                    <td>{book.description}</td>
+                    <td><a href={`https://isbnsearch.org/isbn/${book.isbn}`} target="_blank" rel="noopener noreferrer">{book.isbn}</a></td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+            {!advancedSearch && (
+              <div className="pagination-controls">
+                {page > 1 && <button onClick={() => handlePageChange(-1)}>Previous</button>}
+                {results.length === limit && <button onClick={() => handlePageChange(1)}>Next</button>}
+              </div>
+            )}
+          </div>
+        )}
+      </div>
+    </div>
+  );
+};
+
+export default SearchBook;

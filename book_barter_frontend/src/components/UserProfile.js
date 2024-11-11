@@ -17,6 +17,7 @@ const UserProfile = () => {
     location: '',
     description: ''
   });
+  const [errorMessage, setErrorMessage] = useState('');
 
   const fetchUserProfile = async () => {
     const userId = localStorage.getItem('user_id');
@@ -29,13 +30,14 @@ const UserProfile = () => {
 
     try {
       // Fetch books listed by the user
-      const booksResponse = await axios.post('http://localhost:5001/api/books/query', { bbid: userId }, {
+      const booksResponse = await axios.post('http://localhost:5001/api/books/query', { owner: userId }, {
         headers: { Authorization: `Bearer ${accessToken}` }
       });
       console.log('Books fetched:', booksResponse.data.data);
       setBooks(booksResponse.data.data);
     } catch (error) {
       console.error('Error fetching user profile or books:', error);
+      setErrorMessage(error.response.data.message);
     }
   };
 
@@ -57,6 +59,7 @@ const UserProfile = () => {
       setBooks(books.filter(book => book.bid !== bid));
     } catch (error) {
       console.error('Error deleting book:', error);
+      setErrorMessage(error.response.data.message);
     }
   };
 
@@ -76,6 +79,7 @@ const UserProfile = () => {
       setEditBook(null);
     } catch (error) {
       console.error('Error updating book:', error);
+      setErrorMessage(error.response.data.message);
     }
   };
 
@@ -127,6 +131,7 @@ const UserProfile = () => {
             <textarea name="description" value={formValues.description} onChange={handleInputChange}></textarea>
           </div>
           <button type="submit" className="update-book-button">Update Book</button>
+          {errorMessage && <p className="error-message">{errorMessage}</p>}
         </form>
       )}
       <table className="books-table">

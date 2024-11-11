@@ -12,7 +12,7 @@ import Verify from './components/Verify';
 import Home from './components/home';
 import ForgotPassword from './components/ForgotPassword';
 import ResetPassword from './components/ResetPassword';
-import SearchBar from './components/SearchBar';
+import SearchBook from './components/SearchBook';
 import './App.css';
 
 function App() {
@@ -26,7 +26,7 @@ function App() {
             <Route path="/login" element={<Login />} />
             <Route path="/profile" element={<UserProfile />} />
             <Route path="/add-book" element={<AddBook />} />
-            <Route path="/search" element={<SearchBar />} />
+            <Route path="/search" element={<SearchBook />} />
             <Route path="/logout" element={<Logout />} />
             <Route path="/verify" element={<Verify />} />
             <Route path="/forgot-password" element={<ForgotPassword />} />

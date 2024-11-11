@@ -76,8 +76,8 @@ const AddBook = () => {
         <div className="form-group">
           <label>Description:</label>
           <textarea value={description} onChange={(e) => setDescription(e.target.value)}></textarea>
+          <button type="submit" className="add-book-button">Add Book</button>
         </div>
-        <button type="submit" className="add-book-button">Add Book</button>
       </form>
     </div>
   );
