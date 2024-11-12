@@ -13,6 +13,7 @@ import Home from './components/home';
 import ForgotPassword from './components/ForgotPassword';
 import ResetPassword from './components/ResetPassword';
 import SearchBook from './components/SearchBook';
+import Wiki from './components/Wiki';
 import './App.css';
 
 function App() {
@@ -31,6 +32,7 @@ function App() {
             <Route path="/verify" element={<Verify />} />
             <Route path="/forgot-password" element={<ForgotPassword />} />
             <Route path="/reset-password" element={<ResetPassword />} />
+            <Route path="/wiki" element={ <Wiki /> } /> 
             <Route path="/" element={<Home />} />
           </Routes>
         </main>

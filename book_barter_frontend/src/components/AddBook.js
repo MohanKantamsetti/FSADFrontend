@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import './AddBook.css';
 
@@ -11,6 +12,9 @@ const AddBook = () => {
   const [availability, setAvailability] = useState(true);
   const [location, setLocation] = useState('');
   const [description, setDescription] = useState('');
+  const [errorMessage, setErrorMessage] = useState('');
+  const [successMessage, setSuccessMessage] = useState('');
+  const navigate = useNavigate();
 
   const handleAddBook = async (e) => {
     e.preventDefault();
@@ -32,9 +36,11 @@ const AddBook = () => {
         headers: { Authorization: `Bearer ${accessToken}` }
       });
       console.log(response.data);
-      // Handle successful book addition (e.g., show a success message or redirect)
+      setSuccessMessage('Book added successfully!');
+      setTimeout(() => navigate('/profile'), 2000);
     } catch (error) {
       console.error('Error adding book:', error);
+      setErrorMessage(error.response.data.message);
     }
   };
 
@@ -78,6 +84,8 @@ const AddBook = () => {
           <textarea value={description} onChange={(e) => setDescription(e.target.value)}></textarea>
           <button type="submit" className="add-book-button">Add Book</button>
         </div>
+        {errorMessage && <p className="error-message">{errorMessage}</p>}
+        {successMessage && <p className="success-message">{successMessage}</p>}
       </form>
     </div>
   );

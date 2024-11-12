@@ -2,11 +2,14 @@ import React from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import './Header.css';
+import bookLogo from '../assets/book-logo.svg';
 
 const Header = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const isLoggedIn = !!localStorage.getItem('access_token');
+  const isHome = location.pathname === '/';
+  const isProfile = location.pathname === '/profile';
 
   const handleLogout = async () => {
     const accessToken = localStorage.getItem('access_token');
@@ -27,37 +30,34 @@ const Header = () => {
     <header className="header">
       <nav className="navbar">
         <div className="logo">
+          <img src={bookLogo} alt="Book Barter Logo" className="logo-img" />
           <Link to="/" className="navbar-link">Book Barter</Link>
         </div>
         <ul className="navbar-list">
-          <li className="navbar-item">
-            <Link to="/" className="navbar-link">Home</Link>
-          </li>
+          {!isHome && (
+            <li className="navbar-item">
+              <Link to="/" className="navbar-link">Home</Link>
+            </li>
+          )}
           {isLoggedIn ? (
             <>
-              <li className="navbar-item">
-                <Link to="/profile" className="navbar-link">Profile</Link>
-              </li>
-              <li className="navbar-item">
-                <Link to="/add-book" className="navbar-link">Add Book</Link>
-              </li>
-              <li className="navbar-item">
-                <Link to="/search" className="navbar-link">Search Books</Link>
-              </li>
+              {!isProfile && (
+                <li className="navbar-item">
+                  <Link to="/profile" className="navbar-link">Profile</Link>
+                </li>
+              )}
               <li className="navbar-item">
                 <button onClick={handleLogout} className="navbar-link logout-button">Logout</button>
               </li>
             </>
           ) : (
-            <>
-              <li className="navbar-item">
-                <Link to="/login" className="navbar-link">Login</Link>
-              </li>
-              <li className="navbar-item">
-                <Link to="/register" className="navbar-link">Register</Link>
-              </li>
-            </>
+            <li className="navbar-item">
+              <Link to="/login" className="navbar-link">Login</Link>
+            </li>
           )}
+          <li className="navbar-item">
+            <Link to="/wiki" className='navbar-link'>Wiki</Link>
+          </li>
         </ul>
       </nav>
     </header>

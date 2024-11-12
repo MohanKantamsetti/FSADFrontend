@@ -9,6 +9,7 @@ const Home = () => {
         <ul className="navbar">
           <li><a href="/">Home</a></li>
           <li><a href="/login">Login</a></li>
+          <li><a href="/wiki">Wiki</a></li>
         </ul>
       </nav>
       <section className="info-section">

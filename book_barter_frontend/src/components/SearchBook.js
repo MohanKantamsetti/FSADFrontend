@@ -81,8 +81,7 @@ const SearchBook = () => {
       {!advancedSearch && (
         <form onSubmit={handleSearch} className="search-form">
           <div className="simple-search">
-            <div className="form-group">
-              <label>Search By:</label>
+            <div className="form-group-combined">
               <select value={searchType} onChange={(e) => setSearchType(e.target.value)}>
                 <option value="owner">Owner</option>
                 <option value="author">Author</option>
@@ -92,26 +91,40 @@ const SearchBook = () => {
                 <option value="location">Location</option>
                 <option value="title">Title</option>
               </select>
+              <input
+                type="text"
+                value={searchText}
+                onChange={(e) => setSearchText(e.target.value)}
+                placeholder="Enter search text"
+              />
             </div>
-            <div className="form-group">
-              <label>Search Text:</label>
-              <input type="text" value={searchText} onChange={(e) => setSearchText(e.target.value)} />
-            </div>
-            <div className="form-group">
-              <label>Page:</label>
-              <input type="number" value={page} onChange={(e) => setPage(Number(e.target.value))} />
-            </div>
-            <div className="form-group">
-              <label>Limit:</label>
-              <input type="number" value={limit} onChange={(e) => setLimit(Number(e.target.value))} />
-            </div>
-            <div className="form-group">
-              <label>Sort By:</label>
-              <select value={sort} onChange={(e) => setSort(e.target.value)}>
-                <option value="genre">Genre</option>
-                <option value="title">Title</option>
-                <option value="author">Author</option>
-              </select>
+            <div className="form-group-inline">
+              <div className="form-group">
+                <label>Page:</label>
+                <input
+                  type="number"
+                  value={page}
+                  onChange={(e) => setPage(Number(e.target.value))}
+                  placeholder="Page"
+                />
+              </div>
+              <div className="form-group">
+                <label>Limit:</label>
+                <input
+                  type="number"
+                  value={limit}
+                  onChange={(e) => setLimit(Number(e.target.value))}
+                  placeholder="Limit"
+                />
+              </div>
+              <div className="form-group">
+                <label>Sort By:</label>
+                <select value={sort} onChange={(e) => setSort(e.target.value)}>
+                  <option value="genre">Genre</option>
+                  <option value="title">Title</option>
+                  <option value="author">Author</option>
+                </select>
+              </div>
             </div>
             <button type="submit" className="search-button">Search</button>
           </div>
@@ -125,38 +138,71 @@ const SearchBook = () => {
       {advancedSearch && (
         <form onSubmit={handleSearch} className="advanced-search-form">
           <div className="form-group">
-            <label>Owner:</label>
-            <input type="text" name="owner" value={advancedSearchFields.owner} onChange={handleAdvancedSearchChange} />
+            <input
+              type="text"
+              name="owner"
+              value={advancedSearchFields.owner}
+              onChange={handleAdvancedSearchChange}
+              placeholder="Owner"
+            />
           </div>
           <div className="form-group">
-            <label>Author:</label>
-            <input type="text" name="author" value={advancedSearchFields.author} onChange={handleAdvancedSearchChange} />
+            <input
+              type="text"
+              name="author"
+              value={advancedSearchFields.author}
+              onChange={handleAdvancedSearchChange}
+              placeholder="Author"
+            />
           </div>
           <div className="form-group">
-            <label>Genre:</label>
-            <input type="text" name="genre" value={advancedSearchFields.genre} onChange={handleAdvancedSearchChange} />
+            <input
+              type="text"
+              name="genre"
+              value={advancedSearchFields.genre}
+              onChange={handleAdvancedSearchChange}
+              placeholder="Genre"
+            />
           </div>
           <div className="form-group">
-            <label>Condition:</label>
-            <input type="text" name="condition" value={advancedSearchFields.condition} onChange={handleAdvancedSearchChange} />
+            <input
+              type="text"
+              name="condition"
+              value={advancedSearchFields.condition}
+              onChange={handleAdvancedSearchChange}
+              placeholder="Condition"
+            />
           </div>
           <div className="form-group">
-            <label>Availability:</label>
-            <select name="availability" value={advancedSearchFields.availability} onChange={handleAdvancedSearchChange}>
+            <select
+              name="availability"
+              value={advancedSearchFields.availability}
+              onChange={handleAdvancedSearchChange}
+            >
               <option value="">Any</option>
               <option value="true">Available</option>
               <option value="false">Lended</option>
             </select>
           </div>
           <div className="form-group">
-            <label>Location:</label>
-            <input type="text" name="location" value={advancedSearchFields.location} onChange={handleAdvancedSearchChange} />
+            <input
+              type="text"
+              name="location"
+              value={advancedSearchFields.location}
+              onChange={handleAdvancedSearchChange}
+              placeholder="Location"
+            />
           </div>
           <div className="form-group">
-            <label>Title:</label>
-            <input type="text" name="title" value={advancedSearchFields.title} onChange={handleAdvancedSearchChange} />
-          <button type="submit" className="search-button">Search</button>
+            <input
+              type="text"
+              name="title"
+              value={advancedSearchFields.title}
+              onChange={handleAdvancedSearchChange}
+              placeholder="Title"
+            />
           </div>
+          <button type="submit" className="search-button">Search</button>
         </form>
       )}
 
@@ -202,6 +248,8 @@ const SearchBook = () => {
                 {results.length === limit && <button onClick={() => handlePageChange(1)}>Next</button>}
               </div>
             )}
+
+            <p>Book Barter C</p>
           </div>
         )}
       </div>

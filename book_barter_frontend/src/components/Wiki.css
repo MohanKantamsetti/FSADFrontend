@@ -1,0 +1,39 @@
+.how-to-guide-container {
+    max-width: 800px;
+    margin: auto;
+    padding: 2rem;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    background-color: #f9f9f9;
+  }
+  
+  .how-to-guide-container h1,
+  .how-to-guide-container h2 {
+    color: #333;
+    margin-bottom: 1rem;
+  }
+  
+  .how-to-guide-container h2 {
+    margin-top: 2rem;
+  }
+  
+  .how-to-guide-container p,
+  .how-to-guide-container ul,
+  .how-to-guide-container ol {
+    margin-bottom: 1rem;
+  }
+  
+  .how-to-guide-container ul {
+    list-style-type: disc;
+    padding-left: 20px;
+  }
+  
+  .how-to-guide-container ol {
+    list-style-type: decimal;
+    padding-left: 20px;
+  }
+  
+  .how-to-guide-container li {
+    margin-bottom: 0.5rem;
+  }
